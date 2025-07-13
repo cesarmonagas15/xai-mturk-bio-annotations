@@ -1,0 +1,8 @@
+__pycache__/
+.env
+.mturk-env/
+*.csv
+*.json
+*.mov
+*.png
+.aws/

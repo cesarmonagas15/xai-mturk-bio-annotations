@@ -1,0 +1,38 @@
+<form name="mturk_form" method="post" id="mturk_form" action="https://workersandbox.mturk.com/mturk/externalSubmit">
+
+    <p><img src="${image_url}" alt="Explanation Image" width="400"/></p>
+  
+    <p><label>What is your prediction?</label><br/>
+    <input type="radio" name="occupation" value="Physician" required/> Physician<br/>
+    <input type="radio" name="occupation" value="Nurse" required/> Nurse
+    </p>
+  
+    <input type="submit" value="Submit" />
+  </form>
+  
+  <script language="Javascript">
+    function turkSetAssignmentID() {
+      var assignmentId = gup("assignmentId");
+      if (assignmentId == null || assignmentId == "") {
+        assignmentId = "";
+      }
+      var form = document.getElementById('mturk_form');
+      if (form) {
+        var el = document.createElement("input");
+        el.type = "hidden";
+        el.name = "assignmentId";
+        el.value = assignmentId;
+        form.appendChild(el);
+      }
+    }
+  
+    function gup(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+      var results = regex.exec(location.search);
+      return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+  
+    window.onload = turkSetAssignmentID;
+  </script>
+  

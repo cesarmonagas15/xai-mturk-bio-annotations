@@ -1,0 +1,3 @@
+# Cursor configuration for this project
+# Use the virtual environment where boto3 is installed
+python_interpreter: ~/.mturk-env/bin/python 
