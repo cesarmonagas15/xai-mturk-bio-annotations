@@ -1,38 +1,111 @@
-<form name="mturk_form" method="post" id="mturk_form" action="https://workersandbox.mturk.com/mturk/externalSubmit">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bio Annotation Task</title>
+    <style>
+        .step { display: none; }
+        .step.active { display: block; }
+        .navigation { margin-top: 20px; }
+    </style>
+</head>
+<body>
 
-    <p><img src="${image_url}" alt="Explanation Image" width="400"/></p>
-  
-    <p><label>What is your prediction?</label><br/>
-    <input type="radio" name="occupation" value="Physician" required/> Physician<br/>
-    <input type="radio" name="occupation" value="Nurse" required/> Nurse
-    </p>
-  
-    <input type="submit" value="Submit" />
-  </form>
-  
-  <script language="Javascript">
-    function turkSetAssignmentID() {
-      var assignmentId = gup("assignmentId");
-      if (assignmentId == null || assignmentId == "") {
-        assignmentId = "";
-      }
-      var form = document.getElementById('mturk_form');
-      if (form) {
-        var el = document.createElement("input");
-        el.type = "hidden";
-        el.name = "assignmentId";
-        el.value = assignmentId;
-        form.appendChild(el);
-      }
+<form id="annotation-form" method="POST" action="">
+    <input type="hidden" id="assignmentId" name="assignmentId" value="">
+
+    <!-- Step 0: Consent -->
+    <div class="step active">
+        <h2>Consent Form</h2>
+        <p>By proceeding, you agree to participate in this research study.</p>
+        <p>This study involves labeling biographies for research purposes. All responses are anonymous and participation is voluntary.</p>
+        <label><input type="checkbox" name="consent" required> I consent to participate</label>
+        <div class="navigation">
+            <button type="button" onclick="nextStep()">Next</button>
+        </div>
+    </div>
+
+    <!-- Bio steps get inserted here -->
+    ${bio_blocks}
+
+    <!-- Final Step: Demographics -->
+    <div class="step">
+        <h2>Demographic Questions</h2>
+
+        <label>Age:
+            <input type="number" name="age" required>
+        </label><br/>
+
+        <label>Gender:
+            <select name="gender" required>
+                <option value="">--Select--</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Non-binary</option>
+                <option>Prefer not to say</option>
+            </select>
+        </label><br/>
+
+        <label>Education Level:
+            <select name="education" required>
+                <option value="">--Select--</option>
+                <option>High school</option>
+                <option>Some college</option>
+                <option>Bachelor's degree</option>
+                <option>Graduate degree</option>
+            </select>
+        </label>
+
+        <div class="navigation">
+            <button type="button" onclick="prevStep()">Back</button>
+            <button type="submit">Submit</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    const steps = document.querySelectorAll('.step');
+    let currentStep = 0;
+
+    function showStep(n) {
+        steps[currentStep].classList.remove('active');
+        currentStep = n;
+        steps[currentStep].classList.add('active');
     }
-  
-    function gup(name) {
-      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-      var results = regex.exec(location.search);
-      return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+
+    function nextStep() {
+        if (validateStep(currentStep)) showStep(currentStep + 1);
     }
-  
-    window.onload = turkSetAssignmentID;
-  </script>
-  
+
+    function prevStep() {
+        showStep(currentStep - 1);
+    }
+
+    function validateStep(n) {
+        const current = steps[n];
+        const required = current.querySelectorAll('input[required], select[required]');
+        for (let input of required) {
+            if (!input.checkValidity()) {
+                input.reportValidity();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // MTurk compatibility: set assignmentId and correct form action
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const assignmentId = urlParams.get("assignmentId") || "";
+        document.getElementById("assignmentId").value = assignmentId;
+
+        // Only set action if assignmentId is valid (not in preview mode)
+        if (assignmentId && assignmentId !== "ASSIGNMENT_ID_NOT_AVAILABLE") {
+            document.getElementById("annotation-form").action = 
+                "https://workersandbox.mturk.com/mturk/externalSubmit";
+        }
+    };
+</script>
+
+</body>
+</html>
