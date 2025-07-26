@@ -5,59 +5,69 @@ from pathlib import Path
 import json
 
 # === CONFIG ===
-INPUT_CSV = Path("../data/bio_image_links_s3.csv")  # Path to CSV with bio_id, variant, s3_url
-OUTPUT_DIR = Path("../data/batches/")                # Directory where batches will be stored
-NUM_BATCHES = 2                                      # Total number of batches to create (change as needed)
-BIOS_PER_BATCH = 20                                  # Number of bios per batch
-RANDOM_SEED = 42                                     # For reproducibility
+INPUT_CSV = Path("../data/bio_image_links_s3.csv")  # bio_id, variant, s3_url
+OUTPUT_DIR = Path("../data/batches/")
+BATCHES_PER_CONDITION = 2        
+BIOS_PER_BATCH = 20
+MAX_USAGE_PER_BIO = 3
+RANDOM_SEED = 42
 
 # === SETUP ===
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+random.seed(RANDOM_SEED)
 
+# Load all entries
 with open(INPUT_CSV, newline='') as csvfile:
     reader = csv.DictReader(csvfile)
-    all_entries = list(reader)
+    entries = list(reader)
 
-# Group by bio_id
-bios_by_id = {}
-for row in all_entries:
+# Group URLs by condition and bio_id
+images_by_condition = {'plain': {}, 'explanation': {}}
+for row in entries:
+    condition = row['variant']  # 'plain' or 'explanation'
     bio_id = row['bio_id']
-    variant = row['variant']  # 'plain' or 'explanation'
     url = row['s3_url']
-    if bio_id not in bios_by_id:
-        bios_by_id[bio_id] = {}
-    bios_by_id[bio_id][variant] = url
+    images_by_condition[condition][bio_id] = url
 
-# Get only bios that have both variants
-valid_bios = [bio_id for bio_id, variants in bios_by_id.items() if 'plain' in variants and 'explanation' in variants]
-print(f"✅ Found {len(valid_bios)} valid bios with both variants")
+# Initialize counters
+usage_counts = {
+    'plain': {bio_id: 0 for bio_id in images_by_condition['plain']},
+    'explanation': {bio_id: 0 for bio_id in images_by_condition['explanation']}
+}
 
-random.seed(RANDOM_SEED)
-random.shuffle(valid_bios)
+# === CREATE BATCHES PER CONDITION ===
+for condition in ['plain', 'explanation']:
+    print(f"\nCreating batches for condition: {condition}")
+    available_bios = list(images_by_condition[condition].keys())
+    random.shuffle(available_bios)
+    
+    for batch_index in range(BATCHES_PER_CONDITION):
+        # Sample 20 bios that haven't been used 3 times yet
+        eligible_bios = [bio_id for bio_id in available_bios if usage_counts[condition][bio_id] < MAX_USAGE_PER_BIO]
 
-bios_needed = NUM_BATCHES * BIOS_PER_BATCH
-if len(valid_bios) < bios_needed:
-    raise ValueError(f"Not enough bios to create {NUM_BATCHES} batches of {BIOS_PER_BATCH}. Needed: {bios_needed}, Found: {len(valid_bios)}")
+        if len(eligible_bios) < BIOS_PER_BATCH:
+            raise ValueError(f"Not enough eligible bios to create batch {batch_index+1} for condition '{condition}'")
 
-# Create batches
-for batch_index in range(NUM_BATCHES):
-    start = batch_index * BIOS_PER_BATCH
-    end = start + BIOS_PER_BATCH
-    batch_bios = valid_bios[start:end]
+        selected_bios = random.sample(eligible_bios, BIOS_PER_BATCH)
 
-    # Randomly assign variant (condition) for each bio in the batch
-    batch_entries = []
-    for bio_id in batch_bios:
-        condition = random.choice(['plain', 'explanation'])
-        entry = {
+        # Update usage counts and remove bios if maxed out
+        for bio_id in selected_bios:
+            usage_counts[condition][bio_id] += 1
+            if usage_counts[condition][bio_id] >= MAX_USAGE_PER_BIO:
+                available_bios.remove(bio_id)
+
+        # Create batch entries
+        batch_entries = [{
             "bio_id": bio_id,
             "condition": condition,
-            "image_url": bios_by_id[bio_id][condition]
-        }
-        batch_entries.append(entry)
+            "image_url": images_by_condition[condition][bio_id]
+        } for bio_id in selected_bios]
 
-    # Save batch to JSON
-    out_path = OUTPUT_DIR / f"batch_{batch_index+1}.json"
-    with open(out_path, "w") as f:
-        json.dump(batch_entries, f, indent=2)
-    print(f"✅ Wrote batch {batch_index+1} to {out_path.resolve()}")
+        # Save to file
+        batch_filename = f"batch_{condition}_{batch_index+1}.json"
+        batch_path = OUTPUT_DIR / batch_filename
+        with open(batch_path, "w") as f:
+            json.dump(batch_entries, f, indent=2)
+
+        print(f"✅ Wrote {batch_filename} with {len(batch_entries)} bios")
+

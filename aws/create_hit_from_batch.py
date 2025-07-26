@@ -2,12 +2,19 @@ import boto3
 import json
 from string import Template
 from pathlib import Path
+from datetime import datetime
 
 # ==== CONFIG ====
-batch_path = Path("../data/batches/batch_1.json") # Only batch1 for now
+batch_path = Path("../data/batches/batch_explanation_1.json")  # Update to loop if needed
 template_path = Path("../templates/hit_template.html")
-output_meta_path = Path("../data/hit_metadata.json")
+meta_dir = Path("../data/hit_metadata/")
 frame_height = 600
+
+# ==== Setup output directory ====
+meta_dir.mkdir(parents=True, exist_ok=True)
+
+# ==== Extract condition from batch filename ====
+condition = batch_path.stem.replace("batch_", "")
 
 # ==== Load batch ====
 with open(batch_path) as f:
@@ -26,7 +33,6 @@ for i, item in enumerate(batch_bios, start=1):
             <input type="radio" name="occupation_{i}" value="Nurse" required> Nurse
         </p>
         <div class="navigation">
-            <button type="button" onclick="prevStep()">Back</button>
             <button type="button" onclick="nextStep()">Next</button>
         </div>
     </div>
@@ -73,8 +79,20 @@ response = mturk.create_hit(
 # ==== Save HIT metadata ====
 hit_id = response['HIT']['HITId']
 group_id = response['HIT']['HITGroupId']
+timestamp = datetime.utcnow().isoformat() + "Z"
 
-output_meta_path.write_text(json.dumps({"HITId": hit_id, "HITGroupId": group_id}, indent=2))
+metadata = {
+    "HITId": hit_id,
+    "HITGroupId": group_id,
+    "created_at": timestamp,
+    "batch_file": batch_path.name,
+    "condition": condition,
+    "bios": batch_bios
+}
+
+meta_file = meta_dir / f"{batch_path.stem}_hit_metadata.json"
+meta_file.write_text(json.dumps(metadata, indent=2))
 
 print("✅ HIT created:")
 print(f"Preview link: https://workersandbox.mturk.com/mturk/preview?groupId={group_id}")
+print(f"📁 Metadata saved to: {meta_file.resolve()}")
