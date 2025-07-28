@@ -4,9 +4,122 @@
     <meta charset="UTF-8">
     <title>Bio Annotation Task</title>
     <style>
-        .step { display: none; }
-        .step.active { display: block; }
-        .navigation { margin-top: 20px; }
+        html, body {
+                height: auto !important;
+                overflow: visible !important;
+            }
+        body {
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #005ea2;
+            margin-top: 0;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .navigation {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .navigation button {
+            background-color: #005ea2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .navigation button:hover {
+            background-color: #004a87;
+        }
+
+        #preview-message {
+            background-color: #eef4fa;
+            border-left: 5px solid #005ea2;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-radius: 6px;
+        }
+
+        .step img {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .nocopy {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            form {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -14,51 +127,76 @@
 <form id="annotation-form" method="POST" action="">
     <input type="hidden" id="assignmentId" name="assignmentId" value="">
 
-    <!-- Step 0: Consent -->
-    <div class="step active">
-        <h2>Consent Form</h2>
-        <p>By proceeding, you agree to participate in this research study.</p>
-        <p>This study involves labeling biographies for research purposes. All responses are anonymous and participation is voluntary.</p>
-        <label><input type="checkbox" name="consent" required> I consent to participate</label>
-        <div class="navigation">
-            <button type="button" onclick="nextStep()">Next</button>
-        </div>
+    <!-- This will show during PREVIEW only -->
+    <div id="preview-message" style="display: none;">
+        <h2>Research Study Summary</h2>
+        <p>You are invited to participate in a research study approved by The University of Texas at Austin. In this study, you will be asked to review short biographies and provide your judgment about the likely occupation of each person.</p>
+        <p>Your participation will contribute to ongoing research on how humans make decisions with the assistance of Artificial Intelligence (AI). The task is part of a larger study on human-AI collaboration in occupational prediction.</p>
+        <p>To begin, you must first accept this HIT. By accepting the HIT, you agree to participate in the study and will be presented with a brief consent form followed by the main task and a short demographics questionnaire.</p>
+        <p><strong>Estimated time:</strong> ~20 minutes<br/>
+        <strong>Compensation:</strong> Base pay + performance bonus<br/>
+        <strong>Eligibility:</strong> U.S.-based workers only, with a strong approval history</p>
+        <p>We appreciate your contribution to this research!</p>
     </div>
+    
+    <!-- This contains your full task (bios, images, etc.) -->
+    <div id="task-container" style="display: none;">
 
-    <!-- Bio steps get inserted here -->
-    ${bio_blocks}
+        <!-- Step 0: Consent Form -->
+        <div class="step active">
+            <h2>Consent Form</h2>
+            <p>This is a volunteer research opportunity. In this study, you will be shown short biographies and asked to predict the occupation of the person whose biography you are reading from a set of predefined options. To assist your decision, for each biography you will be shown the predicted occupation from an Artificial Intelligence (AI). You will also be asked to rate your agreement with multiple statements and be given the opportunity to provide open-ended textual feedback. At the end of the study, you will be asked to complete a demographic survey. Both the open-ended textual feedback and your responses to demographic questions are voluntary and will not affect your payment.</p>
+            <p>Participation in this study is voluntary. You can stop your participation at any time by closing the browser window. The study and any of your responses are anonymous. You can only take the survey once.</p>
+            <p>This study is not suitable for people with certain visual disabilities. Participants must especially be able to distinguish the colors orange and blue in several degrees of shading.</p>
+            <p>There may be some attention checks throughout the study. Failure to pass the attention checks will lead to the elimination of your questionnaire from the study and therefore no payment. We reserve the right to also exclude questionnaires with obviously random or otherwise non-serious responses.</p>
+            <p>This survey will take approximately 20 minutes to complete. For successful completion, you will receive a base payment of $3.00. For each correct occupation prediction, you will receive an additional payment of $0.05.</p>
+            <p>Please use a desktop, laptop, or tablet to respond to this survey to ensure optimal visual functionality. Please do not use your browser's back or refresh button while filling out the survey.</p>
+            <p><strong>Contact information:</strong><br/>
+            The University of Texas at Austin<br/>
+            Institutional Review Board<br/>
+            Phone: +1 512-232-1543<br/>
+            E-Mail: irb@austin.utexas.edu</p>
 
-    <!-- Final Step: Demographics -->
-    <div class="step">
-        <h2>Demographic Questions</h2>
+            <label><input type="checkbox" name="consent" required> I consent to participate</label>
+            <div class="navigation">
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+        </div>
 
-        <label>Age:
-            <input type="number" name="age" required>
-        </label><br/>
+        <!-- Step 1 to X: Bio Tasks -->
+        ${bio_blocks} <!-- Make sure each bio block has class="step nocopy" -->
 
-        <label>Gender:
-            <select name="gender" required>
-                <option value="">--Select--</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Non-binary</option>
-                <option>Prefer not to say</option>
-            </select>
-        </label><br/>
+        <!-- Final Step: Demographics -->
+        <div class="step">
+            <h2>Demographic Questions</h2>
 
-        <label>Education Level:
-            <select name="education" required>
-                <option value="">--Select--</option>
-                <option>High school</option>
-                <option>Some college</option>
-                <option>Bachelor's degree</option>
-                <option>Graduate degree</option>
-            </select>
-        </label>
+            <label>Age:
+                <input type="number" name="age" required>
+            </label><br/>
 
-        <div class="navigation">
-            <button type="button" onclick="prevStep()">Back</button>
-            <button type="submit">Submit</button>
+            <label>Gender:
+                <select name="gender" required>
+                    <option value="">--Select--</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Non-binary</option>
+                    <option>Prefer not to say</option>
+                </select>
+            </label><br/>
+
+            <label>Education Level:
+                <select name="education" required>
+                    <option value="">--Select--</option>
+                    <option>High school</option>
+                    <option>Some college</option>
+                    <option>Bachelor's degree</option>
+                    <option>Graduate degree</option>
+                </select>
+            </label>
+
+            <div class="navigation">
+                <button type="submit">Submit</button>
+            </div>
         </div>
     </div>
 </form>
@@ -77,10 +215,6 @@
         if (validateStep(currentStep)) showStep(currentStep + 1);
     }
 
-    function prevStep() {
-        showStep(currentStep - 1);
-    }
-
     function validateStep(n) {
         const current = steps[n];
         const required = current.querySelectorAll('input[required], select[required]');
@@ -93,18 +227,33 @@
         return true;
     }
 
-    // MTurk compatibility: set assignmentId and correct form action
-    window.onload = function() {
+    window.onload = function () {
         const urlParams = new URLSearchParams(window.location.search);
-        const assignmentId = urlParams.get("assignmentId") || "";
-        document.getElementById("assignmentId").value = assignmentId;
+        const assignmentId = urlParams.get("assignmentId");
+        const form = document.getElementById("annotation-form");
 
-        // Only set action if assignmentId is valid (not in preview mode)
-        if (assignmentId && assignmentId !== "ASSIGNMENT_ID_NOT_AVAILABLE") {
-            document.getElementById("annotation-form").action = 
-                "https://workersandbox.mturk.com/mturk/externalSubmit";
+        // Assign assignmentId to hidden input
+        if (assignmentId) {
+            document.getElementById("assignmentId").value = assignmentId;
+        }
+
+        if (assignmentId === "ASSIGNMENT_ID_NOT_AVAILABLE") {
+            document.getElementById("preview-message").style.display = "block";
+            document.getElementById("task-container").style.display = "none";
+        } else {
+            document.getElementById("preview-message").style.display = "none";
+            document.getElementById("task-container").style.display = "block";
+            form.action = "https://workersandbox.mturk.com/mturk/externalSubmit";
         }
     };
+
+    // Disable right-click and copy
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && ['c', 'x', 'u', 's'].includes(e.key.toLowerCase())) {
+            e.preventDefault();
+        }
+    });
 </script>
 
 </body>
