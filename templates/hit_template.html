@@ -169,35 +169,91 @@
         <!-- Final Step: Demographics -->
         <div class="step">
             <h2>Demographic Questions</h2>
-
-            <label>Age:
-                <input type="number" name="age" required>
+        
+            <!-- Age -->
+            <label><strong>How old are you?</strong></label><br/>
+            <label><input type="radio" name="age" value="Under 18" required> Under 18</label><br/>
+            <label><input type="radio" name="age" value="18-24"> 18–24 years old</label><br/>
+            <label><input type="radio" name="age" value="25-34"> 25–34 years old</label><br/>
+            <label><input type="radio" name="age" value="35-44"> 35–44 years old</label><br/>
+            <label><input type="radio" name="age" value="45-54"> 45–54 years old</label><br/>
+            <label><input type="radio" name="age" value="55-64"> 55–64 years old</label><br/>
+            <label><input type="radio" name="age" value="65+"> 65+ years old</label><br/><br/>
+        
+            <!-- Gender -->
+            <label><strong>How do you describe yourself?</strong></label><br/>
+            <label><input type="radio" name="gender" value="Male" required> Male</label><br/>
+            <label><input type="radio" name="gender" value="Female"> Female</label><br/>
+            <label><input type="radio" name="gender" value="Non-binary / third gender"> Non-binary / third gender</label><br/>
+            <label>
+            <input type="radio" name="gender" value="Self-describe"> Prefer to self-describe
+            <input type="text" name="gender_self_describe" placeholder="Enter description" style="margin-left: 10px; width: 60%;">
             </label><br/>
-
-            <label>Gender:
-                <select name="gender" required>
-                    <option value="">--Select--</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                    <option>Non-binary</option>
-                    <option>Prefer not to say</option>
-                </select>
-            </label><br/>
-
-            <label>Education Level:
-                <select name="education" required>
-                    <option value="">--Select--</option>
-                    <option>High school</option>
-                    <option>Some college</option>
-                    <option>Bachelor's degree</option>
-                    <option>Graduate degree</option>
-                </select>
-            </label>
-
+            <label><input type="radio" name="gender" value="Prefer not to say"> Prefer not to say</label><br/><br/>
+        
+            <!-- Race -->
+            <label><strong>Choose one or more races that you consider yourself to be:</strong></label><br/>
+            <label><input type="checkbox" name="race" value="White or Caucasian"> White or Caucasian</label><br/>
+            <label><input type="checkbox" name="race" value="Black or African American"> Black or African American</label><br/>
+            <label><input type="checkbox" name="race" value="American Indian/Native American or Alaska Native"> American Indian/Native American or Alaska Native</label><br/>
+            <label><input type="checkbox" name="race" value="Asian"> Asian</label><br/>
+            <label><input type="checkbox" name="race" value="Native Hawaiian or Other Pacific Islander"> Native Hawaiian or Other Pacific Islander</label><br/>
+            <label><input type="checkbox" name="race" value="Other"> Other</label><br/>
+            <label><input type="checkbox" name="race" value="Prefer not to say"> Prefer not to say</label><br/><br/>
+        
+            <!-- Ethnicity -->
+            <label><strong>Are you of Spanish, Hispanic, or Latino origin?</strong></label><br/>
+            <label><input type="radio" name="ethnicity" value="Yes" required> Yes</label><br/>
+            <label><input type="radio" name="ethnicity" value="No"> No</label><br/><br/>
+        
+            <!-- Education -->
+            <label><strong>What is the highest level of education you have completed?</strong></label><br/>
+            <label><input type="radio" name="education" value="Some high school or less" required> Some high school or less</label><br/>
+            <label><input type="radio" name="education" value="High school diploma or GED"> High school diploma or GED</label><br/>
+            <label><input type="radio" name="education" value="Some college, no degree"> Some college, but no degree</label><br/>
+            <label><input type="radio" name="education" value="Associates or technical degree"> Associates or technical degree</label><br/>
+            <label><input type="radio" name="education" value="Bachelor’s degree"> Bachelor’s degree</label><br/>
+            <label><input type="radio" name="education" value="Graduate or professional degree"> Graduate or professional degree (MA, MS, MBA, PhD, JD, MD, DDS etc.)</label><br/>
+            <label><input type="radio" name="education" value="Prefer not to say"> Prefer not to say</label><br/><br/>
+        
+            <!-- Employment -->
+            <label><strong>What best describes your employment status over the last three months?</strong></label><br/>
+            <label><input type="radio" name="employment" value="Working full-time" required> Working full-time</label><br/>
+            <label><input type="radio" name="employment" value="Working part-time"> Working part-time</label><br/>
+            <label><input type="radio" name="employment" value="Unemployed and looking for work"> Unemployed and looking for work</label><br/>
+            <label><input type="radio" name="employment" value="Homemaker or stay-at-home parent"> A homemaker or stay-at-home parent</label><br/>
+            <label><input type="radio" name="employment" value="Student"> Student</label><br/>
+            <label><input type="radio" name="employment" value="Retired"> Retired</label><br/>
+            <label><input type="radio" name="employment" value="Other"> Other</label><br/><br/>
+        
+            <!-- Task Familiarity -->
+            <label><strong>Do you currently work or have you ever worked in a field related to Hiring or Human Resources (HR)?</strong></label><br/>
+            <label><input type="radio" name="task_familiarity" value="Yes" required> Yes</label><br/>
+            <label><input type="radio" name="task_familiarity" value="No"> No</label><br/><br/>
+        
+            <!-- Prior Experience -->
+            <label><strong>Have you ever applied or (knowingly) been subject to Artificial Intelligence (AI)-based decision-making?</strong></label><br/>
+            <label><input type="radio" name="ai_experience" value="Yes" required> Yes</label><br/>
+            <label><input type="radio" name="ai_experience" value="Maybe"> Maybe</label><br/>
+            <label><input type="radio" name="ai_experience" value="No"> No</label><br/><br/>
+        
+            <!-- AI Literacy -->
+            <label><strong>When it comes to Artificial Intelligence (AI), I believe I have:</strong></label><br/>
+            <label><input type="radio" name="ai_literacy" value="No knowledge" required> No knowledge: I might be aware of AI, but have no knowledge about it</label><br/>
+            <label><input type="radio" name="ai_literacy" value="A little knowledge"> A little knowledge: I know basic concepts in AI, but have never applied it</label><br/>
+            <label><input type="radio" name="ai_literacy" value="Some knowledge"> Some knowledge: I have applied AI concepts by coding at least once before</label><br/>
+            <label><input type="radio" name="ai_literacy" value="Moderate knowledge"> Moderate knowledge: I apply AI concepts somewhat frequently</label><br/>
+            <label><input type="radio" name="ai_literacy" value="A lot of knowledge"> A lot of knowledge: I apply AI concepts very frequently or create cutting edge software</label><br/><br/>
+        
+            <!-- Feedback -->
+            <label><strong>Do you want to provide any feedback on this survey?</strong></label><br/>
+            <textarea name="survey_feedback" rows="5" cols="80" placeholder="Your comments..."></textarea><br/><br/>
+        
             <div class="navigation">
-                <button type="submit">Submit</button>
+            <button type="submit">Submit</button>
             </div>
         </div>
+  
     </div>
 </form>
 
