@@ -4,6 +4,7 @@ import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
 import pandas as pd
+import os
 
 # === CONFIG ===
 HIT_METADATA_DIR = Path("../data/hit_metadata")
@@ -119,3 +120,40 @@ with open(BIO_CSV_OUT, "rb") as f:
 with open(ASSIGNMENT_CSV_OUT, "rb") as f:
     s3.upload_fileobj(f, S3_BUCKET_NAME, ASSIGNMENT_CSV_OUT.name)
     print(f"☁️ Uploaded to s3://{S3_BUCKET_NAME}/{ASSIGNMENT_CSV_OUT.name}")
+
+# === BONUS LOGIC ===
+lambda_client = boto3.client('lambda', region_name='us-east-1')
+
+BONUS_PER_CORRECT = 0.05  # $0.05 per correct answer
+LAMBDA_NAME = os.getenv("BONUS_LAMBDA_NAME", "mturk-send-bonus")  # set in env
+
+print("\n💰 Calculating bonuses...")
+df_bio = pd.DataFrame(bio_level_records)
+if not df_bio.empty:
+    bonus_df = (
+        df_bio.groupby(["assignment_id", "worker_id"])
+              .agg(correct_count=("correct", "sum"))
+              .reset_index()
+    )
+    bonus_df["bonus_amount"] = bonus_df["correct_count"] * BONUS_PER_CORRECT
+
+    for _, row in bonus_df.iterrows():
+        if row["bonus_amount"] > 0:
+            payload = {
+                "worker_id": row["worker_id"],
+                "assignment_id": row["assignment_id"],
+                "bonus_amount": f"{row['bonus_amount']:.2f}",
+                "reason": f"Bonus for {int(row['correct_count'])} correct answers"
+            }
+            print(f"➡️ Sending to Lambda: {payload}")
+            try:
+                response = lambda_client.invoke(
+                    FunctionName=LAMBDA_NAME,
+                    InvocationType="Event",  # async
+                    Payload=json.dumps(payload).encode('utf-8')
+                )
+                print(f"✅ Lambda invoked: {response['StatusCode']}")
+            except Exception as e:
+                print(f"❌ Error invoking Lambda: {e}")
+else:
+    print("⚠️ No bio-level data found — skipping bonus calculation")

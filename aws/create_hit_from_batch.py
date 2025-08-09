@@ -160,6 +160,30 @@ def create_hit_from_batch(batch_path, template_path, meta_dir, reward, frame_hei
         AssignmentDurationInSeconds=7200,
         AutoApprovalDelayInSeconds=86400,
         Question=question_xml
+        QualificationRequirements=[
+        # {
+        #     'QualificationTypeId': '000000000000000000L0',  # Approval rate
+        #     'Comparator': 'GreaterThanOrEqualTo',
+        #     'IntegerValues': [95],
+        #     'ActionsGuarded': 'DiscoverPreviewAndAccept'
+        # },
+        # {
+        #     'QualificationTypeId': '00000000000000000040',  # HITs approved
+        #     'Comparator': 'GreaterThanOrEqualTo',
+        #     'IntegerValues': [500],
+        #     'ActionsGuarded': 'DiscoverPreviewAndAccept'
+        # },
+        # {
+        #     'QualificationTypeId': '00000000000000000071',  # Locale
+        #     'Comparator': 'EqualTo',
+        #     'LocaleValues': [{'Country': 'US'}],
+        #     'ActionsGuarded': 'DiscoverPreviewAndAccept'
+        # },
+        {
+              'QualificationTypeId': QUALIFICATION_TYPE_ID,
+              'Comparator': 'DoesNotExist'
+        }
+        ]
     )
 
     # ==== Save metadata ====
