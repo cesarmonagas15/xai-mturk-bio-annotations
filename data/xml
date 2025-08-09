@@ -1,0 +1,51 @@
+
+
+<?xml version="1.0" encoding="ASCII"?>
+<QuestionFormAnswers xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionFormAnswers.xsd">
+<Answer>
+    <QuestionIdentifier>consent</QuestionIdentifier><FreeText>on</FreeText>
+</Answer>
+
+<Answer>
+<QuestionIdentifier>occupation_1</QuestionIdentifier>
+    <FreeText>Nurse</FreeText>
+</Answer>
+
+<Answer>
+<QuestionIdentifier>occupation_2</QuestionIdentifier>
+    <FreeText>Nurse</FreeText>
+</Answer>
+
+<Answer>
+<QuestionIdentifier>occupation_3</QuestionIdentifier>
+    <FreeText>Nurse</FreeText></Answer>
+    
+<Answer>
+<QuestionIdentifier>occupation_4</QuestionIdentifier>
+    <FreeText>Physician</FreeText>
+</Answer>
+
+<Answer>
+<QuestionIdentifier>occupation_5</QuestionIdentifier>
+    <FreeText>Nurse</FreeText>
+</Answer>
+
+<Answer>
+<QuestionIdentifier>occupation_6</QuestionIdentifier>
+    <FreeText>Nurse</FreeText>
+</Answer>
+
+<Answer>
+<QuestionIdentifier>occupation_7</QuestionIdentifier>
+    <FreeText>Nurse</FreeText>
+</Answer><Answer><QuestionIdentifier>occupation_8</QuestionIdentifier><FreeText>Nurse</FreeText></Answer><Answer><QuestionIdentifier>occupation_9</QuestionIdentifier><FreeText>Nurse</FreeText></Answer><Answer><QuestionIdentifier>occupation_10</QuestionIdentifier><FreeText>Nurse</FreeText></Answer><Answer><QuestionIdentifier>occupation_11</QuestionIdentifier><FreeText>Physician</FreeText></Answer><Answer><QuestionIdentifier>occupation_12</QuestionIdentifier><FreeText>Nurse</FreeText></Answer><Answer><QuestionIdentifier>occupation_13</QuestionIdentifier><FreeText>Nurse</FreeText></Answer><Answer><QuestionIdentifier>occupation_14</QuestionIdentifier><FreeText>Nurse</FreeText></Answer><Answer><QuestionIdentifier>occupation_15</QuestionIdentifier><FreeText>Physician</FreeText></Answer><Answer><QuestionIdentifier>occupation_16</QuestionIdentifier><FreeText>Nurse</FreeText></Answer><Answer><QuestionIdentifier>occupation_17</QuestionIdentifier><FreeText>Physician</FreeText></Answer><Answer><QuestionIdentifier>occupation_18</QuestionIdentifier><FreeText>Nurse</FreeText></Answer><Answer><QuestionIdentifier>occupation_19</QuestionIdentifier><FreeText>Nurse</FreeText></Answer><Answer><QuestionIdentifier>occupation_20</QuestionIdentifier><FreeText>Physician</FreeText></Answer><Answer><QuestionIdentifier>bias_free</QuestionIdentifier><FreeText>Somewhat agree</FreeText></Answer><Answer><QuestionIdentifier>ethical</QuestionIdentifier><FreeText>Somewhat agree</FreeText></Answer><Answer><QuestionIdentifier>fairness</QuestionIdentifier><FreeText>Fully agree</FreeText></Answer><Answer><QuestionIdentifier>age</QuestionIdentifier><FreeText>35-44</FreeText></Answer><Answer><QuestionIdentifier>gender</QuestionIdentifier><FreeText>Male</FreeText></Answer><Answer><QuestionIdentifier>gender_self_describe</QuestionIdentifier><FreeText/></Answer><Answer><QuestionIdentifier>race</QuestionIdentifier><FreeText>Black or African American</FreeText></Answer><Answer><QuestionIdentifier>ethnicity</QuestionIdentifier><FreeText>No</FreeText></Answer><Answer><QuestionIdentifier>education</QuestionIdentifier><FreeText>Bachelor&#8217;s degree</FreeText></Answer><Answer><QuestionIdentifier>employment</QuestionIdentifier><FreeText>Working part-time</FreeText></Answer><Answer><QuestionIdentifier>task_familiarity</QuestionIdentifier><FreeText>No</FreeText></Answer><Answer><QuestionIdentifier>ai_experience</QuestionIdentifier><FreeText>No</FreeText></Answer><Answer><QuestionIdentifier>ai_literacy</QuestionIdentifier><FreeText>A little knowledge</FreeText></Answer><Answer><QuestionIdentifier>survey_feedback</QuestionIdentifier><FreeText/></Answer></QuestionFormAnswers>
+
+
+
+
+
+
+
+
+
+

@@ -22,7 +22,7 @@ explanation_batches = [f for f in all_batch_files if "explanation" in f.name]
 print(f"🔍 Found {len(plain_batches)} plain batches and {len(explanation_batches)} explanation batches")
 
 # === Create HITs by randomly selecting batch types ===
-num_hits_to_create = 4  # or however many HITs you want
+num_hits_to_create = 10  # or however many HITs we want
 
 for i in range(num_hits_to_create):
     # Randomly choose between plain and explanation

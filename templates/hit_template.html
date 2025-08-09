@@ -37,9 +37,23 @@
 
         label {
             display: block;
-            margin-top: 20px;
             font-weight: 500;
+            margin-top: 8px;
+            margin-bottom: 2px;
         }
+
+        .question-label {
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        .perception-group,
+        .demographic-group {
+            margin-left: 16px;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
 
         input[type="text"],
         input[type="number"],
@@ -132,10 +146,9 @@
         <h2>Research Study Summary</h2>
         <p>You are invited to participate in a research study approved by The University of Texas at Austin. In this study, you will be asked to review short biographies and provide your judgment about the likely occupation of each person.</p>
         <p>Your participation will contribute to ongoing research on how humans make decisions with the assistance of Artificial Intelligence (AI). The task is part of a larger study on human-AI collaboration in occupational prediction.</p>
-        <p>To begin, you must first accept this HIT. By accepting the HIT, you agree to participate in the study and will be presented with a brief consent form followed by the main task and a short demographics questionnaire.</p>
-        <p><strong>Estimated time:</strong> ~20 minutes<br/>
+        <p>To begin, you must first accept this HIT. You will first be presented with a brief consent form followed by the main task and a short demographics questionnaire.</p>
+        <p><strong>Estimated time:</strong> ~X minutes<br/>
         <strong>Compensation:</strong> Base pay + performance bonus<br/>
-        <strong>Eligibility:</strong> U.S.-based workers only, with a strong approval history</p>
         <p>We appreciate your contribution to this research!</p>
     </div>
     
@@ -149,8 +162,9 @@
             <p>Participation in this study is voluntary. You can stop your participation at any time by closing the browser window. The study and any of your responses are anonymous. You can only take the survey once.</p>
             <p>This study is not suitable for people with certain visual disabilities. Participants must especially be able to distinguish the colors orange and blue in several degrees of shading.</p>
             <p>There may be some attention checks throughout the study. Failure to pass the attention checks will lead to the elimination of your questionnaire from the study and therefore no payment. We reserve the right to also exclude questionnaires with obviously random or otherwise non-serious responses.</p>
-            <p>This survey will take approximately 20 minutes to complete. For successful completion, you will receive a base payment of $3.00. For each correct occupation prediction, you will receive an additional payment of $0.05.</p>
+            <p>This survey will take approximately 20 minutes to complete. For successful completion, you will receive a base payment of $3.00. For each correct occupation prediction, you will receive an additional payment of $0.10.</p>
             <p>Please use a desktop, laptop, or tablet to respond to this survey to ensure optimal visual functionality. Please do not use your browser's back or refresh button while filling out the survey.</p>
+            <p>If you have any questions about this research, you may contact Prof. Maria De-Arteaga (email: dearteaga@mccombs.utexas.edu)</p>
             <p><strong>Contact information:</strong><br/>
             The University of Texas at Austin<br/>
             Institutional Review Board<br/>
@@ -178,19 +192,20 @@
             <label><input type="radio" name="age" value="35-44"> 35–44 years old</label><br/>
             <label><input type="radio" name="age" value="45-54"> 45–54 years old</label><br/>
             <label><input type="radio" name="age" value="55-64"> 55–64 years old</label><br/>
-            <label><input type="radio" name="age" value="65+"> 65+ years old</label><br/><br/>
-        
+            <label><input type="radio" name="age" value="65+"> 65+ years old</label><br/>
+            <label><input type="radio" name="age" value="Prefer not to say"> Prefer not to say</label><br/><br/>
+
             <!-- Gender -->
             <label><strong>How do you describe yourself?</strong></label><br/>
             <label><input type="radio" name="gender" value="Male" required> Male</label><br/>
             <label><input type="radio" name="gender" value="Female"> Female</label><br/>
             <label><input type="radio" name="gender" value="Non-binary / third gender"> Non-binary / third gender</label><br/>
             <label>
-            <input type="radio" name="gender" value="Self-describe"> Prefer to self-describe
-            <input type="text" name="gender_self_describe" placeholder="Enter description" style="margin-left: 10px; width: 60%;">
+                <input type="radio" name="gender" value="Self-describe"> Prefer to self-describe
+                <input type="text" name="gender_self_describe" placeholder="Enter description" style="margin-left: 10px; width: 60%;">
             </label><br/>
             <label><input type="radio" name="gender" value="Prefer not to say"> Prefer not to say</label><br/><br/>
-        
+
             <!-- Race -->
             <label><strong>Choose one or more races that you consider yourself to be:</strong></label><br/>
             <label><input type="checkbox" name="race" value="White or Caucasian"> White or Caucasian</label><br/>
@@ -200,12 +215,13 @@
             <label><input type="checkbox" name="race" value="Native Hawaiian or Other Pacific Islander"> Native Hawaiian or Other Pacific Islander</label><br/>
             <label><input type="checkbox" name="race" value="Other"> Other</label><br/>
             <label><input type="checkbox" name="race" value="Prefer not to say"> Prefer not to say</label><br/><br/>
-        
+
             <!-- Ethnicity -->
             <label><strong>Are you of Spanish, Hispanic, or Latino origin?</strong></label><br/>
             <label><input type="radio" name="ethnicity" value="Yes" required> Yes</label><br/>
-            <label><input type="radio" name="ethnicity" value="No"> No</label><br/><br/>
-        
+            <label><input type="radio" name="ethnicity" value="No"> No</label><br/>
+            <label><input type="radio" name="ethnicity" value="Prefer not to say"> Prefer not to say</label><br/><br/>
+
             <!-- Education -->
             <label><strong>What is the highest level of education you have completed?</strong></label><br/>
             <label><input type="radio" name="education" value="Some high school or less" required> Some high school or less</label><br/>
@@ -215,7 +231,7 @@
             <label><input type="radio" name="education" value="Bachelor’s degree"> Bachelor’s degree</label><br/>
             <label><input type="radio" name="education" value="Graduate or professional degree"> Graduate or professional degree (MA, MS, MBA, PhD, JD, MD, DDS etc.)</label><br/>
             <label><input type="radio" name="education" value="Prefer not to say"> Prefer not to say</label><br/><br/>
-        
+
             <!-- Employment -->
             <label><strong>What best describes your employment status over the last three months?</strong></label><br/>
             <label><input type="radio" name="employment" value="Working full-time" required> Working full-time</label><br/>
@@ -224,8 +240,9 @@
             <label><input type="radio" name="employment" value="Homemaker or stay-at-home parent"> A homemaker or stay-at-home parent</label><br/>
             <label><input type="radio" name="employment" value="Student"> Student</label><br/>
             <label><input type="radio" name="employment" value="Retired"> Retired</label><br/>
-            <label><input type="radio" name="employment" value="Other"> Other</label><br/><br/>
-        
+            <label><input type="radio" name="employment" value="Other"> Other</label><br/>
+            <label><input type="radio" name="employment" value="Prefer not to say"> Prefer not to say</label><br/><br/>
+    
             <!-- Task Familiarity -->
             <label><strong>Do you currently work or have you ever worked in a field related to Hiring or Human Resources (HR)?</strong></label><br/>
             <label><input type="radio" name="task_familiarity" value="Yes" required> Yes</label><br/>

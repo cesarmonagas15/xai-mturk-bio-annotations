@@ -7,7 +7,7 @@ import json
 # === CONFIG ===
 INPUT_CSV = Path("../data/bio_image_links_s3.csv")  # bio_id, variant, s3_url
 OUTPUT_DIR = Path("../data/batches/")
-BATCHES_PER_CONDITION = 2        
+BATCHES_PER_CONDITION = 5        
 BIOS_PER_BATCH = 20
 MAX_USAGE_PER_BIO = 3
 RANDOM_SEED = 42

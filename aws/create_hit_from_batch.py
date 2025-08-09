@@ -35,9 +35,10 @@ def create_hit_from_batch(batch_path, template_path, meta_dir, reward, frame_hei
         intro_text = f"""
         <div class="step">
             <h2>Instructions</h2>
-            <p>You will now be shown {num_bios} short biographies and for each asked to predict whether the person is a physician or a nurse.</p>
-            <p>To assist your decision, you will see the predicted occupation from an AI.</p>
-            <p>In addition, the AI highlights words that influenced its decision. Blue words suggest "physician", orange words suggest "nurse", and darker colors mean stronger influence. See the example below.</p>
+            <p>You will now be shown {num_bios} short biographies and for each asked to predict whether the person whose biography you are reading is a physician or a nurse.</p>
+            <p>To assist your decision, for each biography you will be shown the predicted occupation from an Aritificial Intelligence (AI).</p>
+            <p>Note that the AI's predictions need not always be correct.</p>
+            <p>In addition to the predicted occupation, the AI also provides a highlighting of words that most influenced its prediction: The color indicates the occupation a word is predictive of (blue for physician, orange for nurse), and the color intensity shows the importance of a word in the AI's prediction.</p>
             <div class="navigation">
                 <button type="button" onclick="nextStep()">Start Task</button>
             </div>
@@ -47,8 +48,9 @@ def create_hit_from_batch(batch_path, template_path, meta_dir, reward, frame_hei
         intro_text = f"""
         <div class="step">
             <h2>Instructions</h2>
-            <p>You will now be shown {num_bios} short biographies and for each asked to predict whether the person is a physician or a nurse.</p>
-            <p>To assist your decision, you will see the predicted occupation from an AI. Note: The AI’s prediction is not always correct.</p>
+            <p>You will now be shown {num_bios} short biographies and for each asked to predict whether the person whose biography you are reading is a physician or a nurse.</p>
+            <p>To assist your decision, for each biography you will be shown the predicted occupation from an Artificial Intelligence (AI). Note that the AI's predictions need not always be correct.</p></br>
+            <p>Your task starts on the next page.</p>
             <div class="navigation">
                 <button type="button" onclick="nextStep()">Start Task</button>
             </div>
@@ -61,7 +63,7 @@ def create_hit_from_batch(batch_path, template_path, meta_dir, reward, frame_hei
         block = f"""
         <div class="step">
             <h3>Bio {i} of {num_bios}</h3>
-            <p><img src="{item['image_url']}" alt="Bio Image" width="400"/></p>
+            <p><img src="{item['image_url']}" alt="Bio Image" width="700"/></p>
             <p>
                 <label>What is your prediction?</label><br/>
                 <input type="radio" name="occupation_{i}" value="Physician" required> Physician<br/>
@@ -74,17 +76,52 @@ def create_hit_from_batch(batch_path, template_path, meta_dir, reward, frame_hei
         """
         bio_blocks.append(block)
 
-    # ==== Thank you + transition to demographics ====
+    # ==== Thank you + transition ====
     bio_blocks.append(""" 
     <div class="step">
         <h2>Thank You!</h2>
         <p>Thank you for completing the task!</p>
-        <p>On the following pages, we kindly ask you to answer some additional demographic questions.</p>
+        <p>On the following pages, we kindly ask you to answer some additional questions.</p>
         <div class="navigation">
             <button type="button" onclick="nextStep()">Continue</button>
         </div>
     </div>
     """)
+
+    # ==== Perceptions Block (only for experimental condition) ====
+    if "explanation" in condition.lower():
+        perceptions_block = """
+        <div class="step">
+            <p>The following three questions refer to the procedures the AI uses to predict a person’s occupation. Please rate your agreement with the following statements.</p>
+
+            <p class="question-label">1. The AI's procedures are free of bias.</p>
+            <label class="perception-group"><input type="radio" name="bias_free" value="Fully disagree" required> Fully disagree</label>
+            <label class="perception-group"><input type="radio" name="bias_free" value="Somewhat disagree"> Somewhat disagree</label>
+            <label class="perception-group"><input type="radio" name="bias_free" value="Neither agree nor disagree"> Neither agree nor disagree</label>
+            <label class="perception-group"><input type="radio" name="bias_free" value="Somewhat agree"> Somewhat agree</label>
+            <label class="perception-group"><input type="radio" name="bias_free" value="Fully agree"> Fully agree</label>
+
+            <p class="question-label">2. The AI's procedures uphold ethical and moral standards.</p>
+            <label class="perception-group"><input type="radio" name="ethical" value="Fully disagree" required> Fully disagree</label>
+            <label class="perception-group"><input type="radio" name="ethical" value="Somewhat disagree"> Somewhat disagree</label>
+            <label class="perception-group"><input type="radio" name="ethical" value="Neither agree nor disagree"> Neither agree nor disagree</label>
+            <label class="perception-group"><input type="radio" name="ethical" value="Somewhat agree"> Somewhat agree</label>
+            <label class="perception-group"><input type="radio" name="ethical" value="Fully agree"> Fully agree</label>
+
+            <p class="question-label">3. It is fair that the AI considers the highlighted words for predicting a person's occupation.</p>
+            <label class="perception-group"><input type="radio" name="fairness" value="Fully disagree" required> Fully disagree</label>
+            <label class="perception-group"><input type="radio" name="fairness" value="Somewhat disagree"> Somewhat disagree</label>
+            <label class="perception-group"><input type="radio" name="fairness" value="Neither agree nor disagree"> Neither agree nor disagree</label>
+            <label class="perception-group"><input type="radio" name="fairness" value="Somewhat agree"> Somewhat agree</label>
+            <label class="perception-group"><input type="radio" name="fairness" value="Fully agree"> Fully agree</label>
+
+            <div class="navigation">
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+        </div>
+        """
+        bio_blocks.append(perceptions_block)
+
 
     bio_blocks_combined = "\n".join(bio_blocks)
 
@@ -119,8 +156,8 @@ def create_hit_from_batch(batch_path, template_path, meta_dir, reward, frame_hei
         Keywords='bio, annotation, healthcare',
         Reward=reward,
         MaxAssignments=3,
-        LifetimeInSeconds=3600,
-        AssignmentDurationInSeconds=600,
+        LifetimeInSeconds=604800,
+        AssignmentDurationInSeconds=7200,
         AutoApprovalDelayInSeconds=86400,
         Question=question_xml
     )
